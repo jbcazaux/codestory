@@ -1,0 +1,9 @@
+--- 
+applications: 
+- path: .
+  url: codestory.${target-base}
+  instances: 1
+  name: codestory
+  runtime: node08
+  memory: 64M
+  framework: node
