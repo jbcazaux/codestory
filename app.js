@@ -8,7 +8,7 @@ var port = 8123;
 var app = express();
 app.configure(function() {
 	app.use(app.router);
-	app.use(express.static(__dirname));
+	app.use('/test', express.static(__dirname + '/test'));
 }).listen(port);
 
 console.log("listening on " + port);
@@ -20,6 +20,5 @@ app.get('/', function(req, res){
 		res.send("jbcazaux@gmail.com");
 		return;
 	}
-	res.send(q);//response
+	res.send(q);
 });
-
