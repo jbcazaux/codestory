@@ -9,6 +9,12 @@ describe("A suite", function() {
 			done();
 		});
 	});
+	it("should respond OUI to Es tu abonne a la mailing list(OUI/NON)", function(done) {
+		request(myserver + "/?q=Es+tu+abonne+a+la+mailing+list(OUI/NON)", function(error, response, body){
+			expect(body).toEqual("OUI");
+			done();
+		});
+	});
 });
 
 	
