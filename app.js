@@ -21,6 +21,10 @@ app.get('/', function(req, res){
 		res.send("jbcazaux@gmail.com");
 		return;
 	}
+	if (q == "Est ce que tu reponds toujours oui(OUI/NON)"){
+		res.send("NON");
+		return;
+	}
 	res.send("OUI");
 });
 

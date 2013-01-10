@@ -27,6 +27,14 @@ describe("phase 1 - GET", function() {
 			done();
 		});
 	});
+	it("should respond NON to Est ce que tu reponds toujours oui(OUI/NON)", function(done) {
+		request(myserver + "/?q=Est+ce+que+tu+reponds+toujours+oui(OUI/NON)", function(error, response, body){
+			expect(body).toEqual("NON");
+			done();
+		});
+	});
+
+
 });
 
 describe("phase 1 - POST", function() {
