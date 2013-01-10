@@ -21,6 +21,13 @@ describe("A suite", function() {
 			done();
 		});
 	});
+	it("should respond OUI to Es tu pret a recevoir une enonce au format markdown par http post(OUI/NON)", function(done) {
+		request(myserver + "/?q=Es+tu+pret+a+recevoir+une+enonce+au+format+markdown+par+http+post(OUI/NON)", function(error, response, body){
+			expect(body).toEqual("OUI");
+			done();
+		});
+	});
+
 });
 
 	

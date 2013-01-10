@@ -20,13 +20,7 @@ app.get('/', function(req, res){
 		res.send("jbcazaux@gmail.com");
 		return;
 	}
-	if (q == "Es tu abonne a la mailing list(OUI/NON)"){
-		res.send("OUI");
-		return;
-	}
-	if (q == "Es tu heureux de participer(OUI/NON)"){
-		res.send("OUI");
-		return;
-	}
-	res.send(q);
+	res.send("OUI");
 });
+
+
