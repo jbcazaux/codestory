@@ -1,16 +1,15 @@
-<strong>Code story 2k13 with nodejs</strong>
+#<strong>Code story 2k13 with nodejs</strong>
 
 
-<strong>how to install</strong>
-npm install
+##how to install
+    npm install
 
-<strong>how to run</strong>
-node app.js
+##how to run
+    node app.js
 
-<strong>how to run tests</strong>(you need to run the server first)
-npm install request
-npm install jasmine-node
-jasmine-node spec/
-
+##how to run tests _(you need to run the server first)_
+    npm install request
+    npm install jasmine-node
+    jasmine-node spec/
 
 
