@@ -7,6 +7,7 @@ var port = 8123;
 //server
 var app = express();
 app.configure(function() {
+	app.use(express.bodyParser());
 	app.use(app.router);
 	app.use('/test', express.static(__dirname + '/test'));
 }).listen(port);
@@ -23,4 +24,8 @@ app.get('/', function(req, res){
 	res.send("OUI");
 });
 
-
+app.post('/', function(req, res) {
+    var q = req.body;
+	console.log("q=" + q);
+	res.send("OK");
+});

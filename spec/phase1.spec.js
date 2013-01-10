@@ -2,7 +2,7 @@ var request = require('request');
 
 var myserver = "http://localhost:8123";
 
-describe("A suite", function() {
+describe("phase 1 - GET", function() {
 	it("should respond with my email", function(done) {
 		request(myserver + "/?q=Quelle+est+ton+adresse+email", function(error, response, body){
 			expect(body).toEqual("jbcazaux@gmail.com");
@@ -27,7 +27,19 @@ describe("A suite", function() {
 			done();
 		});
 	});
+});
 
+describe("phase 1 - POST", function() {
+	it("should parse POST requests", function(done) {
+		request.post({
+				headers: {'content-type' : 'application/x-www-form-urlencoded'},
+				url: myserver + '/',
+			 	body: "msg=hello"
+			     }, function(error, response, body){
+			    	expect(body).toEqual("OK");
+				done();
+			     });
+	});
 });
 
 	
