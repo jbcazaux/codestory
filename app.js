@@ -25,11 +25,11 @@ app.get('/', function(req, res){
 		res.send("NON");
 		return;
 	}
-	res.send("OUI");
+	res.status(201).send("OUI");
 });
 
 app.post('/', function(req, res) {
     var q = req.body;
 	console.log("q=" + q);
-	res.send("OK");
+	res.send(201, "OK");
 });

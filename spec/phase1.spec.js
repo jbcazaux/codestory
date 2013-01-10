@@ -44,6 +44,7 @@ describe("phase 1 - POST", function() {
 				url: myserver + '/',
 			 	body: "msg=hello"
 			     }, function(error, response, body){
+				expect(response.statusCode).toEqual(201);
 			    	expect(body).toEqual("OK");
 				done();
 			     });
