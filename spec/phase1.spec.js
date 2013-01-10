@@ -15,6 +15,12 @@ describe("A suite", function() {
 			done();
 		});
 	});
+	it("should respond OUI to Es tu heureux de participer(OUI/NON)", function(done) {
+		request(myserver + "/?q=Es+tu+heureux+de+participer(OUI/NON)", function(error, response, body){
+			expect(body).toEqual("OUI");
+			done();
+		});
+	});
 });
 
 	

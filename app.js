@@ -24,5 +24,9 @@ app.get('/', function(req, res){
 		res.send("OUI");
 		return;
 	}
+	if (q == "Es tu heureux de participer(OUI/NON)"){
+		res.send("OUI");
+		return;
+	}
 	res.send(q);
 });
