@@ -9,10 +9,12 @@ var app = express();
 app.configure(function() {
 	app.use(express.bodyParser());
 	app.use(app.router);
-	app.use('/test', express.static(__dirname + '/test'));
+	app.use('/', express.static(__dirname));
 }).listen(port);
 
 console.log("listening on " + port);
+
+
 
 app.get('/', function(req, res){
 	var q = req.param('q');
@@ -28,8 +30,13 @@ app.get('/', function(req, res){
 	res.status(201).send("OUI");
 });
 
-app.post('/', function(req, res) {
-    var q = req.body;
-	console.log("q=" + q);
-	res.send(201, "OK");
+app.post('/enonce/1', function(req, res) {
+	console.log("POST METHOD" + req.body);
+ 	var q = req.body;
+	for (var i in q){
+		console.log(i + " -> " + q[i]);
+	}
+	res.send(201);
 });
+
+

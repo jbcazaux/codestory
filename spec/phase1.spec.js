@@ -38,14 +38,14 @@ describe("phase 1 - GET", function() {
 });
 
 describe("phase 1 - POST", function() {
-	it("should parse POST requests", function(done) {
+	it("should read post on /enonce/1", function(done) {
 		request.post({
 				headers: {'content-type' : 'application/x-www-form-urlencoded'},
-				url: myserver + '/',
+				url: myserver + '/enonce/1',
 			 	body: "msg=hello"
 			     }, function(error, response, body){
 				expect(response.statusCode).toEqual(201);
-			    	expect(body).toEqual("OK");
+			    	expect(body).toEqual("Created");
 				done();
 			     });
 	});
