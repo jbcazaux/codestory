@@ -7,6 +7,7 @@ var port = 8123;
 //server
 var app = express();
 app.configure(function() {
+	app.use(express.logger());
 	app.use(express.bodyParser());
 	app.use(app.router);
 	app.use('/', express.static(__dirname));
@@ -14,11 +15,8 @@ app.configure(function() {
 
 console.log("listening on " + port);
 
-
-
 app.get('/', function(req, res){
 	var q = req.param('q');
-	console.log("q=" + q);
 	if (q == "Quelle est ton adresse email"){
 		res.send("jbcazaux@gmail.com");
 		return;
@@ -30,13 +28,14 @@ app.get('/', function(req, res){
 	res.status(201).send("OUI");
 });
 
-app.post('/enonce/1', function(req, res) {
-	console.log("POST METHOD" + req.body);
+app.post('*', function(req, res) {
  	var q = req.body;
-	for (var i in q){
-		console.log(i + " -> " + q[i]);
-	}
+	console.dir(req.body)
 	res.send(201);
+});
+
+app.get('/scalaskel/change/:X', function(req, res) {
+	res.send(200, req.params.X);
 });
 
 

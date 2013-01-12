@@ -1,6 +1,7 @@
 var request = require('request');
 
 var myserver = "http://localhost:8123";
+server = "http://codestory.cloudfoundry.com";
 
 describe("phase 1 - GET", function() {
 	it("should respond with my email", function(done) {
@@ -21,8 +22,8 @@ describe("phase 1 - GET", function() {
 			done();
 		});
 	});
-	it("should respond OUI to Es tu pret a recevoir une enonce au format markdown par http post(OUI/NON)", function(done) {
-		request(myserver + "/?q=Es+tu+pret+a+recevoir+une+enonce+au+format+markdown+par+http+post(OUI/NON)", function(error, response, body){
+	it("should respond OUI to Es tu pret a recevoir un enonce au format markdown par http post(OUI/NON)", function(done) {
+		request(myserver + "/?q=Es+tu+pret+a+recevoir+un+enonce+au+format+markdown+par+http+post(OUI/NON)", function(error, response, body){
 			expect(body).toEqual("OUI");
 			done();
 		});
@@ -38,11 +39,11 @@ describe("phase 1 - GET", function() {
 });
 
 describe("phase 1 - POST", function() {
-	it("should read post on /enonce/1", function(done) {
+	it("should answer 201 to any post", function(done) {
 		request.post({
 				headers: {'content-type' : 'application/x-www-form-urlencoded'},
 				url: myserver + '/enonce/1',
-			 	body: "msg=hello"
+			 	body: "un peu de tout dans le body et [{'truc1':'machin1'}, {'truc2':'machin2'}]"
 			     }, function(error, response, body){
 				expect(response.statusCode).toEqual(201);
 			    	expect(body).toEqual("Created");
