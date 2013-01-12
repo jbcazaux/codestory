@@ -35,7 +35,37 @@ app.post('*', function(req, res) {
 });
 
 app.get('/scalaskel/change/:X', function(req, res) {
-	res.send(200, req.params.X);
+	console.log("\n\nCHANGE = " + req.params.X);
+	res.json(getChangeInJson(getChanges(req.params.X)));
 });
+
+function Change(foo, bar, quix, baz){
+	this.foo = foo;
+	this.bar = bar;
+	this.quix = quix;
+	this.baz = baz;
+}
+function getChangeInJson(changes){
+	
+	var all = new Array();
+	for (var a in changes){
+		var c = {};
+		if (changes[a].bar > 0) c.bar = changes[a].bar;
+		if (changes[a].foo > 0) c.foo = changes[a].foo;
+		all.push(c);
+		console.log("---------->");		
+		console.dir(c);
+	}
+	
+	return all;
+}
+
+function getChanges(change){
+	var arr = [];
+	for (var i = 0; 7 * i <= change; i++){
+		arr.push(new Change(change - 7*i, i));
+	}
+	return arr ;	 
+}
 
 
