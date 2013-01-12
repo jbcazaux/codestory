@@ -50,8 +50,10 @@ function getChangeInJson(changes){
 	var all = new Array();
 	for (var a in changes){
 		var c = {};
+		if (changes[a].quix > 0) c.quix = changes[a].quix;
 		if (changes[a].bar > 0) c.bar = changes[a].bar;
 		if (changes[a].foo > 0) c.foo = changes[a].foo;
+
 		all.push(c);
 		console.log("---------->");		
 		console.dir(c);
@@ -62,8 +64,12 @@ function getChangeInJson(changes){
 
 function getChanges(change){
 	var arr = [];
-	for (var i = 0; 7 * i <= change; i++){
-		arr.push(new Change(change - 7*i, i));
+	for (var q = 0; 11 * q <= change; q++){
+		var changeq = change - 11*q;
+		for (var b = 0; 7 * b <= changeq; b++){
+			var changeb = changeq - 7*b;			
+			arr.push(new Change(changeb, b, q));
+		}
 	}
 	return arr ;	 
 }
