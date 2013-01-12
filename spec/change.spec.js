@@ -73,8 +73,8 @@ describe("phase 1 - change", function() {
 	it("should answser correctly to change 22", function(done) {
 		request(myserver + "/scalaskel/change/22", function(error, response, body){
 			var answer = JSON.parse(body);
-			expect(answer.length).toBe(7);			
-			var expected = [{'foo':22}, {'bar':1,'foo':15}, {'bar':2, 'foo':8}, {'bar':3, 'foo':1}, {'quix':1, 'foo':11}, {'quix':1, 'bar': 1, 'foo':4}, {'quix':2}];
+			expect(answer.length).toBe(8);			
+			var expected = [{'foo':22}, {'bar':1,'foo':15}, {'bar':2, 'foo':8}, {'bar':3, 'foo':1}, {'quix':1, 'foo':11}, {'quix':1, 'bar': 1, 'foo':4}, {'quix':2}, {'baz': 1, 'foo': 1}];
 			for (var comb in answer){
 				for (var piece in answer[comb]){
 					expect(answer[comb][piece]).toBe(expected[comb][piece]);
