@@ -35,47 +35,26 @@ app.post('*', function(req, res) {
 });
 
 app.get('/scalaskel/change/:X', function(req, res) {
-	console.log("\n\nCHANGE = " + req.params.X);
-	res.json(getChangeInJson(getChanges(req.params.X)));
+	res.json(getChanges(req.params.X));
 });
 
-function Change(){
-	var values = {'foo': 0, 'bar': 0, 'quix': 0, 'baz': 0};	
-	for (var i in arguments){
-		values[i] = arguments[i];
-	}
-	this.asJson = function(){
-		var json = {};		
-		for (var i in values){
-			if (values[i] > 0) json[i] = values[i];
-		}
-		return json;
-	}
-}
-
-function getChangeInJson(possibilities){
-	
-	var all = new Array();
-	for (var p in possibilities){
-		all.push(possibilities[p]);
-		console.log("---------->");		
-		console.dir(possibilities[p]);
-	}
-	
-	return all;
-}
-
 function getChanges(change){
-	var arr = [];
-	for (var ba = 0; 21 * ba<= change; ba++){
-		var changeba = change - 21*ba;
-		for (var q = 0; 11 * q <= changeba; q++){
-			var changeq = changeba - 11*q;
-			for (var b = 0; 7 * b <= changeq; b++){
-				var changeb = changeq - 7*b;			
-				arr.push(new Change(changeb, b, q, ba));
+	var possibilities = [];
+	for (var baz = 0; 21 * baz <= change; baz++){
+		var changebaz = change - 21*baz;
+		for (var quix = 0; 11 * quix <= changebaz; quix++){
+			var changequix = changebaz - 11*quix;
+			
+			for (var bar = 0; 7 * bar <= changequix; bar++){
+				var changebar = changequix - 7*bar;
+				var possibility = {};
+				if (changebar > 0) possibility['foo'] = changebar;
+				if (bar > 0) possibility['bar'] = bar;
+	  			if (quix > 0) possibility['quix'] = quix;
+				if (baz > 0) possibility['baz'] = baz;
+				possibilities.push(possibility);
 			}
 		}
 	}
-	return arr ;	 
+	return possibilities ;	 
 }
