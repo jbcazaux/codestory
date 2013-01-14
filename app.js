@@ -18,6 +18,13 @@ console.log("listening on " + port);
 
 app.get('/', function(req, res){
 	var q = req.param('q');
+
+	var calc=/^[\d\-\+/\*\)\(]+$/gi;
+	if (calc.test(q)){
+		console.log(q + " = " + eval(q));
+		res.send(200, eval(q).toString());
+		return;
+	}
 	if (q == "Quelle est ton adresse email"){
 		res.send("jbcazaux@gmail.com");
 		return;
@@ -26,7 +33,7 @@ app.get('/', function(req, res){
 		res.send("NON");
 		return;
 	}
-	res.status(201).send("OUI");
+	res.status(200).send("OUI");
 });
 
 app.post('*', function(req, res) {
