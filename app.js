@@ -1,7 +1,7 @@
 //imports
-var express = require('express');
-var scalaskel = require('./scalaskel.js');
-
+var express = require('express'),
+scalaskel = require('./scalaskel.js');
+querystring = require('querystring');
 //running port
 var port = 8123;
 
@@ -18,13 +18,18 @@ console.log("listening on " + port);
 
 app.get('/', function(req, res){
 	var q = req.param('q');
+	console.log("q=" + q);
 
-	var calc=/^[\d\-\+/\*\)\(]+$/gi;
-	if (calc.test(q)){
-		console.log(q + " = " + eval(q));
-		res.send(200, eval(q).toString());
-		return;
+	var rawq = req._parsedUrl.query.split('=')[1];
+	if (rawq) {
+		var calc=/^[\d\-\+/\*\)\(]+$/gi;
+		if (calc.test(rawq)){
+			console.log(rawq + " = " + eval(rawq));
+			res.send(200, eval(rawq).toString());
+			return;
+		}
 	}
+	
 	if (q == "Quelle est ton adresse email"){
 		res.send("jbcazaux@gmail.com");
 		return;
