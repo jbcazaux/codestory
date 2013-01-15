@@ -27,8 +27,7 @@ app.get('/', function(req, res){
 		var calc=/^[\d\-\+/\*\)\(,]+$/gi;
 		if (calc.test(rawq)){
 			console.log(rawq + " = " + eval(rawq));
-			//res.send(200, eval(rawq.replace(',', '.')).replace('.', ","));
-			res.send(evaluateExpression(infixToPostfix(rawq.replace(/,/g, '.'))).toString().replace(/\./g, ",").replace(',0', ''));			
+			res.send(evaluateExpression(infixToPostfix(rawq.replace(/,/g, '.'))).toString().replace(/\./g, ",").replace(/(,0+)/, ''));			
 			return;
 		}
 	}
