@@ -66,9 +66,9 @@ Object.defineProperty(Array.prototype, 'last', {
 });
 
 	
-function evaluateExpression(expression)
+function evaluateExpression(queue)
 {
-    var tokens = expression.split(/([\d\.]+|[*\+\-/\(\)])/).filter(notEmpty);
+    var tokens = queue;
     var evalStack = [];
 
     while (tokens.length != 0)
@@ -122,7 +122,7 @@ function infixToPostfix(expression)
 
         if (isNumber(currentToken)) 
         {
-            outputQueue.push(currentToken);
+            outputQueue.push(parseFloat(currentToken));
         }
         else if (isOperator(currentToken)) 
         {
@@ -160,7 +160,7 @@ function infixToPostfix(expression)
                      
     }
 
-    return outputQueue.join(" ");
+    return outputQueue;
 }    
 
 
