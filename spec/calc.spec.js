@@ -34,4 +34,16 @@ describe("phase 1 - change", function() {
 			done();
 		});
 	});
+	it("should answser correctly to 1,1+2,2", function(done) {
+		request(myserver + "/?q=1,1+2,2", function(error, response, body){
+			expect(body).toBe('3,3');
+			done();
+		});
+	});
+	it("should answser correctly to 1,1-2,2", function(done) {
+		request(myserver + "/?q=1,1-2,2", function(error, response, body){
+			expect(body).toBe('-1,1');
+			done();
+		});
+	});
 });

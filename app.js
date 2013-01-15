@@ -1,7 +1,9 @@
 //imports
 var express = require('express'),
-scalaskel = require('./scalaskel.js');
-querystring = require('querystring');
+scalaskel = require('./scalaskel.js'),
+querystring = require('querystring'),
+bigdecimal = require("bigdecimal");
+
 //running port
 var port = 8123;
 
@@ -26,7 +28,7 @@ app.get('/', function(req, res){
 		if (calc.test(rawq)){
 			console.log(rawq + " = " + eval(rawq));
 			//res.send(200, eval(rawq.replace(',', '.')).replace('.', ","));
-			res.send(evaluateExpression(infixToPostfix(rawq.replace(',', '.'))).toString().replace('.', ","));			
+			res.send(evaluateExpression(infixToPostfix(rawq.replace(/,/g, '.'))).toString().replace(/\./g, ",").replace(',0', ''));			
 			return;
 		}
 	}
@@ -75,7 +77,7 @@ function evaluateExpression(queue)
     {
         var currentToken = tokens.shift();
 
-        if (isNumber(currentToken))
+        if (isNumber(currentToken.toString()))
         {
             evalStack.push(currentToken);
         }
@@ -96,13 +98,13 @@ function performOperation(operand1, operand2, operator)
     switch(operator)
     {
         case '+': 
-            return operand1 + operand2;
+            return operand1.add(operand2);
         case '-':
-            return operand1 - operand2;
+            return operand1.subtract(operand2);
         case '*':
-            return operand1 * operand2;
+            return operand1.multiply(operand2);
         case '/':
-            return operand1 / operand2;
+            return operand1.divide(operand2);
         default:
             return;
     }
@@ -122,7 +124,7 @@ function infixToPostfix(expression)
 
         if (isNumber(currentToken)) 
         {
-            outputQueue.push(parseFloat(currentToken));
+            outputQueue.push(new bigdecimal.BigDecimal(currentToken));
         }
         else if (isOperator(currentToken)) 
         {
