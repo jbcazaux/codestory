@@ -52,5 +52,13 @@ describe("phase 1 - change", function() {
 			done();
 		});
 	});
+	it("should answser correctly to ((1,1+2)+3,14+4+(5+6+7)+(8+9+10)*4267387833344334647677634)/2*553344300034334349999000", function(done) {
+		request(myserver + "/?q=(-1)+(1)", function(error, response, body){
+			expect(body).toBe('0');
+			done();
+		});
+	});
+
+
 
 });

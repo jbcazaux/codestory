@@ -67,6 +67,7 @@ function infixToPostfix(expression)
     var tokens = expression.split(/([\d\.]+|[\*\+\-\/\(\)])/).filter(notEmpty);
     var outputQueue = [];
     var operatorStack = [];
+    var lastToken = '';
 
     while (tokens.length > 0)
     {
@@ -76,6 +77,13 @@ function infixToPostfix(expression)
         {
             outputQueue.push(new bigdecimal.BigDecimal(currentToken));
         }
+	else if (isUnaryOp(currentToken, lastToken))
+	{
+	    //expect next token to be a number
+	    lastToken = currentToken;
+	    currentToken = tokens.shift();
+	    outputQueue.push(new bigdecimal.BigDecimal(currentToken).negate());	
+	}
         else if (isOperator(currentToken)) 
         {
             while (getPrecedence(currentToken) <= getPrecedence(operatorStack.last) ) 
@@ -100,7 +108,8 @@ function infixToPostfix(expression)
     	        outputQueue.push(operatorStack.pop());
             }	
             operatorStack.pop();		
-        }   
+        }
+	lastToken = currentToken;   
     }  
 
     while (operatorStack.length != 0)
@@ -121,9 +130,13 @@ function isOperator(token)
     return /^[*\+\-\/]$/.test(token);
 }
 
+function isUnaryOp(currentToken, lastToken){
+    return currentToken == '-' && (getPrecedence(lastToken) > 0 || lastToken == '' || lastToken == '(');
+}
+
 function isNumber(token)
 {
-    return /^\d*(\.\d+)?$/.test(token);
+    return /^\d*(\.\d+)?$/.test(token) || /^\-(\d+|(\.\d+))$/.test(token);
 }
 
 
