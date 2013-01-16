@@ -1,5 +1,7 @@
 var bigdecimal = require("bigdecimal");
 
+bigdecimal.BigDecimal.prototype.compute = function(){return this;};
+
 function notEmpty(val){
 	return val && val != '';
 }
@@ -15,7 +17,8 @@ Object.defineProperty(Array.prototype, 'last', {
 
 
 function compute(expression){
-	return evaluateExpression(infixToPostfix(expression.replace(/,/g, '.'))).toString().replace(/\./g, ',').replace(/(,0+)/, '');
+	//return evaluateExpression(infixToPostfix(expression.replace(/,/g, '.'))).toString().replace(/\./g, ',').replace(/(,0+)/, '');
+	return infixToPostfix(expression.replace(/,/g, '.')).compute().toString().replace(/\./g, ',').replace(/(,0+)/, '');
 }
 	
 function evaluateExpression(queue)
@@ -68,6 +71,8 @@ function infixToPostfix(expression)
     var outputQueue = [];
     var operatorStack = [];
     var lastToken = '';
+    var outputTree = new BinaryTree();
+    var myqueue = [];
 
     while (tokens.length > 0)
     {
@@ -76,19 +81,23 @@ function infixToPostfix(expression)
         if (isNumber(currentToken)) 
         {
             outputQueue.push(new bigdecimal.BigDecimal(currentToken));
+	    myqueue.push(new bigdecimal.BigDecimal(currentToken));
         }
 	else if (isUnaryOp(currentToken, lastToken))
 	{
 	    //expect next token to be a number
 	    lastToken = currentToken;
 	    currentToken = tokens.shift();
-	    outputQueue.push(new bigdecimal.BigDecimal(currentToken).negate());	
+	    outputQueue.push(new bigdecimal.BigDecimal(currentToken).negate());
+	    myqueue.push(new bigdecimal.BigDecimal(currentToken).negate());	
 	}
         else if (isOperator(currentToken)) 
         {
             while (getPrecedence(currentToken) <= getPrecedence(operatorStack.last) ) 
             {
-                outputQueue.push(operatorStack.pop())
+                outputQueue.push(operatorStack.pop());
+		var newNode = new BinaryTree(myqueue.pop(), myqueue.pop(), outputQueue.last); 		
+		myqueue.push(newNode);
             }
 
             operatorStack.push(currentToken);
@@ -106,6 +115,8 @@ function infixToPostfix(expression)
     	            return "Error in braces count";
 
     	        outputQueue.push(operatorStack.pop());
+		var newNode = new BinaryTree(myqueue.pop(), myqueue.pop(), outputQueue.last); 		
+		myqueue.push(newNode);
             }	
             operatorStack.pop();		
         }
@@ -118,10 +129,13 @@ function infixToPostfix(expression)
 		return "Error in braces count";
         
 	outputQueue.push(operatorStack.pop());
+	var newNode = new BinaryTree(myqueue.pop(), myqueue.pop(), outputQueue.last); 		
+	myqueue.push(newNode);
                      
     }
-
-    return outputQueue;
+    console.dir(myqueue[0]);
+    return myqueue[0];
+   //return outputQueue;
 }    
 
 
@@ -154,5 +168,19 @@ function getPrecedence(token)
     	    return -1;
     }
 }
+
+function BinaryTree(right, left, op){
+	this.left = left;
+	this.right = right;
+	this.op = op;
+ 	this.compute = function(){
+		var l = this.left.compute();
+		var r = this.right.compute(); 
+		return l[this.getOp(this.op)](r);
+	};
+}
+BinaryTree.prototype.operators = {'+': 'add', '-': 'subtract', '*': 'multiply', '/': 'divide'};
+BinaryTree.prototype.getOp = function(op){return this.operators[op];};
+
 
 module.exports.compute = compute;
