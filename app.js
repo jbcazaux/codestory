@@ -66,7 +66,6 @@ app.post('/jajascript/optimize', function(req, res) {
 		  res.send(400, 'invalid json, empty body');
 		  return;
 		}
-		console.log(buf);
 
 		var planning = jajascript.getBestPlanning(JSON.parse(buf));
 		console.dir(JSON.stringify(planning));

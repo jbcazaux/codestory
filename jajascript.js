@@ -39,20 +39,23 @@ Planning.prototype.addTrip = function(trip){
 
 /*filter plannings by removing worst candidates
 * ie plannings whose gain is not as good as the reference planning
-* and whose departure is after remainings commands
+* and whose end is too late
 */
 function optimizeFilter(refP, minDeparture){
 	return function(p){
-		if ((p.end >= refP.end && p.gain < refP.gain) || (refP.end <= minDeparture && p.gain < refP.gain)){
+		if (p.gain < refP.gain && (p.end >= refP.end || refP.end <= minDeparture)){
 			return false;		
 		}
 		return true;
 	}
 }
 
+/*the idea is to iterate over all possibilities each time a trip is added, 
+but after the trip is added to remove worst plannings (a few plannings can remain after the filter).
+*/
 function maximiseMoney(trips){
 	var plannings = new Array(),
-	tmpPlanning, bestP, refP, cnt1=0, cnt2=0;
+	tmpPlanning, bestP, refP;
 	//order trips	
 	trips = trips.sort(tripCompare);
 	//create first planning 
@@ -61,13 +64,11 @@ function maximiseMoney(trips){
 	//define a reference planning (first by default)
 	refP = plannings[0];
 	for (var t in trips){
-		cnt1++;
 		//filter planning to get rid of worst candidates
 			plannings = plannings.filter(optimizeFilter(refP, trips[t].departure));
 		//try to get best planning after analysing a new trip
 		bestP = new Planning().addTrip(trips[t]);
 		for (var p in plannings){
-			cnt2++;
 			tmpPlanning = plannings[p].addTrip(trips[t]);
 			if (tmpPlanning.gain > bestP.gain){
 				bestP = tmpPlanning;
@@ -76,8 +77,8 @@ function maximiseMoney(trips){
 		//set new reference planning
 		if (bestP.gain > refP.gain){
 			refP = bestP;
+			//add new possibility only if it s better. Otherwise it would have been filtered on next iteration
 			plannings.push(bestP);
-			
 		}
 		
 	}
