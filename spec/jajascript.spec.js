@@ -1,12 +1,12 @@
 var request = require('request');
 
 var myserver = "http://localhost:8123";
-server = "http://codestory.cloudfoundry.com";
+//myserver = "http://codestory.cloudfoundry.com";
 
 describe("phase 1 - jajascript", function() {
 	it("should answer correctly to jajascript optimisation", function(done) {
 		request.post({
-				headers: {'content-type' : 'application/json'},
+				headers: {'content-type' : 'application/x-www-url-form-encoded'},
 				url: myserver + '/jajascript/optimize',
 			 	body: '[{ "VOL": "MONAD42", "DEPART": 0, "DUREE": 5, "PRIX": 10 },{ "VOL": "META18", "DEPART": 3, "DUREE": 7, "PRIX": 14 },{ "VOL":"LEGACY01", "DEPART": 5, "DUREE": 9, "PRIX": 8 },{ "VOL": "YAGNI17", "DEPART": 5, "DUREE": 9, "PRIX": 7 }]'
 			     }, function(error, response, body){
@@ -20,7 +20,7 @@ describe("phase 1 - jajascript", function() {
 	});
 	it("should answer correctly to jajascript optimisation", function(done) {
 		request.post({
-				headers: {'content-type' : 'application/json'},
+				headers: {'content-type' : 'application/x-www-url-form-encoded'},
 				url: myserver + '/jajascript/optimize',
 			 	body: '[{"VOL":"clever-jelly-18","DEPART":0,"DUREE":4,"PRIX":7},{"VOL":"outstanding-cowhand-56","DEPART":1,"DUREE":2,"PRIX":9},{"VOL":"thoughtless-trowel-76","DEPART":2,"DUREE":6,"PRIX":7},{"VOL":"miniature-woodpecker-31","DEPART":4,"DUREE":5,"PRIX":6},{"VOL":"tame-shoreline-88","DEPART":5,"DUREE":2,"PRIX":27},{"VOL":"confused-peacock-8","DEPART":5,"DUREE":4,"PRIX":7},{"VOL":"blue-economist-28","DEPART":6,"DUREE":2,"PRIX":1},{"VOL":"late-reptile-90","DEPART":7,"DUREE":6,"PRIX":5},{"VOL":"clumsy-sleeper-85","DEPART":9,"DUREE":5,"PRIX":21},{"VOL":"gigantic-tidewater-85","DEPART":10,"DUREE":2,"PRIX":30},{"VOL":"blue-eyed-sprout-61","DEPART":10,"DUREE":4,"PRIX":14},{"VOL":"cooing-sunshine-5","DEPART":11,"DUREE":2,"PRIX":5},{"VOL":"thankful-fortuneteller-95","DEPART":12,"DUREE":6,"PRIX":4},{"VOL":"swift-anorexic-5","DEPART":14,"DUREE":5,"PRIX":22},{"VOL":"tender-balance-61","DEPART":15,"DUREE":2,"PRIX":13}]'
 			     }, function(error, response, body){

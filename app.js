@@ -8,11 +8,13 @@ jajascript = require('./jajascript.js');
 //running port
 var port = 8123;
 
+
 //server
 var app = express();
 app.configure(function() {
 	app.use(express.logger());
-	app.use(express.bodyParser());
+	//app.use(express.bodyParser());
+	//app.use(express.json());
 	app.use(app.router);
 	app.use('/', express.static(__dirname));
 }).listen(port);
@@ -50,8 +52,19 @@ app.get('/', function(req, res){
 });
 
 app.post('/jajascript/optimize', function(req, res) {
- 	var q = req.body;
-	res.send(201, jajascript.getBestPlanning(q));
+	console.dir(req.headers);
+	req.setEncoding('utf8');
+	var buf = '';
+	req.on('data', function(chunk){ 
+		buf += chunk;
+	});
+        req.on('end', function(){
+        if (0 == buf.length) {
+          res.send(400, 'invalid json, empty body');
+	  return;
+        }
+        res.send(201, jajascript.getBestPlanning(JSON.parse(buf)));
+      });
 });
 
 app.post('*', function(req, res) {
