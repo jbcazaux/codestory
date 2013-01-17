@@ -2,7 +2,8 @@
 var express = require('express'),
 querystring = require('querystring'),
 scalaskel = require('./scalaskel.js'),
-calculator = require('./calculator.js');
+calculator = require('./calculator.js'),
+jajascript = require('./jajascript.js');
 
 //running port
 var port = 8123;
@@ -46,6 +47,11 @@ app.get('/', function(req, res){
 	}
 
 	res.status(200).send("OUI");
+});
+
+app.post('/jajascript/optimize', function(req, res) {
+ 	var q = req.body;
+	res.send(201, jajascript.getBestPlanning(q));
 });
 
 app.post('*', function(req, res) {
