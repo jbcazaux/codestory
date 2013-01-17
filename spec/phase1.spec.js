@@ -40,6 +40,13 @@ describe("phase 1 - GET", function() {
 			done();
 		});
 	});
+	it("should respond NON to ", function(done) {
+		request(myserver + "/?q=As+tu+copie+le+code+de+ndeloof(OUI/NON/JE_SUIS_NICOLAS)", function(error, response, body){
+			expect(body).toEqual("NON");
+			done();
+		});
+	});
+	
 
 
 });

@@ -47,24 +47,32 @@ app.get('/', function(req, res){
 		res.send("NON");
 		return;
 	}
+	if (q == "As tu copie le code de ndeloof(OUI/NON/JE_SUIS_NICOLAS)"){
+		res.send("NON");
+		return;
+	}
 
 	res.status(200).send("OUI");
 });
 
 app.post('/jajascript/optimize', function(req, res) {
-	console.dir(req.headers);
 	req.setEncoding('utf8');
 	var buf = '';
 	req.on('data', function(chunk){ 
 		buf += chunk;
 	});
         req.on('end', function(){
-        if (0 == buf.length) {
-          res.send(400, 'invalid json, empty body');
-	  return;
-        }
-        res.send(201, jajascript.getBestPlanning(JSON.parse(buf)));
-      });
+		if (0 == buf.length) {
+		  res.send(400, 'invalid json, empty body');
+		  return;
+		}
+		console.log(buf);
+
+		var planning = jajascript.getBestPlanning(JSON.parse(buf));
+		console.dir(JSON.stringify(planning));
+		res.set('Content-Type', 'application/json');
+		res.send(201, JSON.stringify(planning));
+        });
 });
 
 app.post('*', function(req, res) {

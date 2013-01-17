@@ -3,7 +3,38 @@ var request = require('request');
 var myserver = "http://localhost:8123";
 //myserver = "http://codestory.cloudfoundry.com";
 
+
+
 describe("phase 1 - jajascript", function() {
+	it("should answer correctly to jajascript optimisation", function(done) {
+	request.post({
+			headers: {'content-type' : 'application/x-www-url-form-encoded'},
+			url: myserver + '/jajascript/optimize',
+		 	body: '[{"VOL": "AF514", "DEPART":0, "DUREE":5, "PRIX": 10}]'
+		     }, function(error, response, body){
+			expect(response.statusCode).toEqual(201);
+			var result = JSON.parse(body);
+			expect(result.gain).toEqual(10);
+		    	expect(result.path[0]).toBe("AF514");
+			done();
+		     });
+	});
+	it("should answer correctly to jajascript optimisation", function(done) {
+	request.post({
+			headers: {'content-type' : 'application/x-www-url-form-encoded'},
+			url: myserver + '/jajascript/optimize',
+		 	body: '[{"VOL": "AF1", "DEPART":0, "DUREE":1, "PRIX": 10},{"VOL": "AF2", "DEPART":1, "DUREE":1, "PRIX": 10}]'
+		     }, function(error, response, body){
+			expect(response.statusCode).toEqual(201);
+			var result = JSON.parse(body);
+			expect(result.gain).toEqual(20);
+		    	expect(result.path[0]).toBe("AF1");
+		    	expect(result.path[1]).toBe("AF2");
+			done();
+		     });
+	});
+
+
 	it("should answer correctly to jajascript optimisation", function(done) {
 		request.post({
 				headers: {'content-type' : 'application/x-www-url-form-encoded'},
