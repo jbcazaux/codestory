@@ -34,6 +34,12 @@ describe("phase 1 - GET", function() {
 			done();
 		});
 	});
+	it("should respond QUELS_BUG to As tu passe une bonne nuit malgre les bugs de l etape precedente(PAS_TOP/BOF/QUELS_BUGS)", function(done) {
+		request(myserver + "/?q=As+tu+passe+une+bonne+nuit+malgre+les+bugs+de+l+etape+precedente(PAS_TOP/BOF/QUELS_BUGS)", function(error, response, body){
+			expect(body).toEqual("QUELS_BUGS");
+			done();
+		});
+	});
 
 
 });

@@ -26,12 +26,16 @@ app.get('/', function(req, res){
 	if (rawq) {
 		var calc=/^[\d\-\+/\*\)\(,]+$/gi;
 		if (calc.test(rawq)){
-			console.log(rawq + " = " + eval(rawq));
+			console.log(rawq);
 			res.send(calculator.compute(rawq));			
 			return;
 		}
 	}
-	
+
+	if (q == "As tu passe une bonne nuit malgre les bugs de l etape precedente(PAS_TOP/BOF/QUELS_BUGS)"){
+		res.send("QUELS_BUGS");
+		return;
+	}	
 	if (q == "Quelle est ton adresse email"){
 		res.send("jbcazaux@gmail.com");
 		return;
@@ -40,6 +44,7 @@ app.get('/', function(req, res){
 		res.send("NON");
 		return;
 	}
+
 	res.status(200).send("OUI");
 });
 
