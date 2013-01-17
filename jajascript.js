@@ -1,3 +1,7 @@
+
+/**
+* main function
+*/
 function getBestPlanning(commands){
 	
 	var trips = [];
@@ -9,7 +13,7 @@ function getBestPlanning(commands){
 
 }
 
-/*expects trips to be ordered*/
+/*how to order trips*/
 function tripCompare(t1, t2){
 	if (t1.departure === t2.departure){
 		return t2.price - t1.price;
@@ -17,6 +21,7 @@ function tripCompare(t1, t2){
 	return t1.departure - t2.departure;
 }
 
+/*a trip has an id, a beginning hour, a duration and a price*/
 function Trip(vol, depart, duree, prix){
 	this.id = vol;
 	this.departure = depart;
@@ -25,11 +30,15 @@ function Trip(vol, depart, duree, prix){
 	this.end =  depart + duree;
 }
 
+/*a planning has a list of its trip's ids, an end and gain(money earned)*/
 function Planning(path, gain, end){
 	this.path = path || [];
 	this.gain = gain || 0;
 	this.end = end || 0;
 }
+/*adding a trip to a planning return a new planning with old trips and the new one
+* if planning cannot accept the trip, it returns an empty array
+*/
 Planning.prototype.addTrip = function(trip){
 	if (this.end <= trip.departure){
 		return new Planning(this.path.concat(trip.id), this.gain + trip.price, trip.end);
@@ -50,8 +59,8 @@ function optimizeFilter(refP, minDeparture){
 	}
 }
 
-/*the idea is to iterate over all possibilities each time a trip is added, 
-but after the trip is added to remove worst plannings (a few plannings can remain after the filter).
+/*the idea is to iterate over all possibilities each time a trip is added. 
+But after the trip is added, to remove the worst plannings (a few plannings can remain after the filter).
 */
 function maximiseMoney(trips){
 	var plannings = new Array(),
@@ -82,7 +91,7 @@ function maximiseMoney(trips){
 		}
 		
 	}
-
+	//turns out that the reference planning is da best one !
 	return {"gain": refP.gain, "path": refP.path};
 }
   
