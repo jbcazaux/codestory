@@ -78,9 +78,6 @@ function maximiseMoney(trips){
 			refP = bestP;
 			plannings.push(bestP);
 			
-		}else{
-			//plannings.push(bestP);
-			console.dir(bestP);
 		}
 		
 	}
