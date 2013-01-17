@@ -3,6 +3,12 @@ var _QIX = 11;
 var _BAR = 7;
 //var _FOO = 1; not used but code suppose it is so.
 
+/*
+Iterate over all possibilities
+If a new type of coin is given, the code needs refactoring (too many for loop).
+Tried to do it recursivity but it s not optimized in JS (vs iterative computation), moreover the code is less readable.
+so plz refactor with care ;) 
+*/
 function getChanges(change){
 	var possibilities = [];
 	for (var baz = 0; _BAZ * baz <= change; baz++){

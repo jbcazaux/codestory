@@ -10,7 +10,8 @@ Object.defineProperty(Array.prototype, 'last', {
     set: undefined
 });
 
-/*Btree for calculation*/
+/*Btree for computation,
+Notice the order of the parameter: RIGHT then LEFT*/
 function BinaryTree(right, left, op){
 	this.left = left;
 	this.right = right;
@@ -24,7 +25,7 @@ BinaryTree.prototype.compute = function(){
 		return l[this.getOp(this.op)](r);
 };
 
-//add compute() function to bigdecimal so it can be viewed as a btreeNode;
+//add compute() function to bigdecimal so it can be viewed as a btree (leaf);
 bigdecimal.BigDecimal.prototype.compute = function(){return this;};
 
 
@@ -64,6 +65,7 @@ function infixToBtree(expression)
 	    lastToken = currentToken;
 	    //expect next token to be a number
 	    currentToken = tokens.shift();
+	    //minus is the only unary op supported for now
 	    queue.push(new bigdecimal.BigDecimal(currentToken).negate());	
 	}
         else if (isOperator(currentToken)) 
@@ -119,8 +121,10 @@ function isUnaryOp(currentToken, lastToken){
     return currentToken == '-' && (getPrecedence(lastToken) > 0 || lastToken == '' || lastToken == '(');
 }
 
+
 function isNumber(token)
 {
+    //f*ckin regex was too complicated to write, split that mothaf*ker
     return /^\d*(\.\d+)?$/.test(token) || /^\-(\d+|(\.\d+))$/.test(token);
 }
 
