@@ -13,8 +13,6 @@ var port = 8123;
 var app = express();
 app.configure(function() {
 	app.use(express.logger());
-	//app.use(express.bodyParser());
-	//app.use(express.json());
 	app.use(app.router);
 	app.use('/', express.static(__dirname));
 }).listen(port);
@@ -74,7 +72,7 @@ app.post('/jajascript/optimize', function(req, res) {
         });
 });
 
-app.post('*', function(req, res) {
+app.post('*', express.bodyParser(), function(req, res) {
  	var q = req.body;
 	console.dir(req.body)
 	res.send(201);
