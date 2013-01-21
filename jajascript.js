@@ -2,11 +2,11 @@
 /**
 * main function
 */
-function getBestPlanning(commands){
+function getBestPlanning(orders){
 	
 	var trips = [];
-	for (var i in commands){
-		trips.push(new Trip(commands[i]['VOL'], commands[i]['DEPART'], commands[i]['DUREE'], commands[i]['PRIX']));
+	for (var i in orders){
+		trips.push(new Trip(orders[i]['VOL'], orders[i]['DEPART'], orders[i]['DUREE'], orders[i]['PRIX']));
 	}
 
 	return(maximiseMoney(trips));
@@ -22,12 +22,12 @@ function tripCompare(t1, t2){
 }
 
 /*a trip has an id, a beginning hour, a duration and a price*/
-function Trip(vol, depart, duree, prix){
-	this.id = vol;
-	this.departure = depart;
-	this.duration = duree;
-	this.price = prix;
-	this.end =  depart + duree;
+function Trip(id, departure, duration, price){
+	this.id = id;
+	this.departure = departure;
+	this.duration = duration;
+	this.price = price;
+	this.end =  departure + duration;
 }
 
 /*a planning has a list of its trip's ids, an end and gain(money earned)*/

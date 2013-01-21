@@ -66,9 +66,9 @@ app.post('/jajascript/optimize', function(req, res) {
 		}
 
 		var planning = jajascript.getBestPlanning(JSON.parse(buf));
-		console.dir(JSON.stringify(planning));
+		console.log("buffer = ", buf);
 		res.set('Content-Type', 'application/json');
-		res.send(201, JSON.stringify(planning));
+		res.send(201, planning);
         });
 });
 
