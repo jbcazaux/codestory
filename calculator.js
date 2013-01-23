@@ -41,7 +41,7 @@ function notEmpty(val){
 
 /*main function*/
 function computeExpression(expression){
-	return infixToBtree(expression.replace(/,/g, '.')).compute().toString().replace(/\./g, ',').replace(/(,0+)/, '');
+	return infixToBtree(expression.replace(/,/g, '.')).compute().toString().replace(/\./g, ',').replace(/(,0+)$/, '');
 }
 	
 /*Convert infix expression To a Binary tree*/
