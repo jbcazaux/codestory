@@ -8,6 +8,56 @@ var myserver = "http://localhost:8123";
 describe("phase 1 - jajascript", function() {
 	it("should answer correctly to jajascript optimisation", function(done) {
 	request.post({
+			timeout: 10000,
+			headers: {'content-type' : 'application/x-www-url-form-encoded'},
+			url: myserver + '/jajascript/optimize',
+		 	body: '[{"VOL": "A0", "DEPART":0, "DUREE":2, "PRIX": 2}, {"VOL": "A1", "DEPART":1, "DUREE":2, "PRIX": 2}, {"VOL": "A2", "DEPART":2, "DUREE":2, "PRIX": 2}, {"VOL": "A3", "DEPART":3, "DUREE":2, "PRIX": 2}, {"VOL": "A4", "DEPART":4, "DUREE":2, "PRIX": 2}, {"VOL": "A5", "DEPART":5, "DUREE":2, "PRIX": 2}, {"VOL": "A6", "DEPART":6, "DUREE":2, "PRIX": 3}, {"VOL": "A7", "DEPART":7, "DUREE":2, "PRIX": 2}]'
+		     }, function(error, response, body){
+			expect(response.statusCode).toEqual(201);
+			var result = JSON.parse(body);
+			expect(result.gain).toEqual(9);
+		    	expect(result.path[0]).toBe("A0");
+			expect(result.path[1]).toBe("A2");
+			expect(result.path[2]).toBe("A4");			
+		    	expect(result.path[3]).toBe("A6");
+			done();
+		     });
+	});
+	it("should answer correctly to jajascript optimisation", function(done) {
+	request.post({
+			timeout: 10000,
+			headers: {'content-type' : 'application/x-www-url-form-encoded'},
+			url: myserver + '/jajascript/optimize',
+		 	body: '[{"VOL": "A0", "DEPART":0, "DUREE":2, "PRIX": 1}, {"VOL": "A1", "DEPART":1, "DUREE":2, "PRIX": 2}, {"VOL": "A2", "DEPART":2, "DUREE":2, "PRIX": 2}, {"VOL": "A3", "DEPART":3, "DUREE":2, "PRIX": 2}, {"VOL": "A4", "DEPART":4, "DUREE":2, "PRIX": 2}, {"VOL": "A5", "DEPART":5, "DUREE":2, "PRIX": 2}, {"VOL": "A6", "DEPART":6, "DUREE":2, "PRIX": 2}, {"VOL": "A7", "DEPART":7, "DUREE":2, "PRIX": 3}]'
+		     }, function(error, response, body){
+			expect(response.statusCode).toEqual(201);
+			var result = JSON.parse(body);
+			expect(result.gain).toEqual(9);
+		    	expect(result.path[0]).toBe("A1");
+		    	expect(result.path[1]).toBe("A3");
+		    	expect(result.path[2]).toBe("A5");
+		    	expect(result.path[3]).toBe("A7");
+			done();
+		     });
+	});
+	it("should answer correctly to jajascript optimisation", function(done) {
+	request.post({
+			timeout: 10000,
+			headers: {'content-type' : 'application/x-www-url-form-encoded'},
+			url: myserver + '/jajascript/optimize',
+		 	body: '[{"VOL": "A0", "DEPART":0, "DUREE":7, "PRIX": 10}, {"VOL": "A1", "DEPART":1, "DUREE":2, "PRIX": 2}, {"VOL": "A2", "DEPART":2, "DUREE":2, "PRIX": 2}, {"VOL": "A3", "DEPART":3, "DUREE":2, "PRIX": 2}, {"VOL": "A4", "DEPART":4, "DUREE":2, "PRIX": 2}, {"VOL": "A5", "DEPART":5, "DUREE":2, "PRIX": 2}, {"VOL": "A6", "DEPART":6, "DUREE":2, "PRIX": 6}, {"VOL": "A7", "DEPART":7, "DUREE":2, "PRIX": 7}]'
+		     }, function(error, response, body){
+			expect(response.statusCode).toEqual(201);
+			var result = JSON.parse(body);
+			expect(result.gain).toEqual(17);
+		    	expect(result.path[0]).toBe("A0");
+		    	expect(result.path[1]).toBe("A7");
+			done();
+		     });
+	});
+	it("should answer correctly to jajascript optimisation", function(done) {
+	request.post({
+			timeout: 10000,
 			headers: {'content-type' : 'application/x-www-url-form-encoded'},
 			url: myserver + '/jajascript/optimize',
 		 	body: '[{"VOL": "AF514", "DEPART":0, "DUREE":5, "PRIX": 10}]'
@@ -51,7 +101,7 @@ describe("phase 1 - jajascript", function() {
 	});
 	it("should answer correctly to jajascript optimisation", function(done) {
 		request.post({
-				headers: {'content-type' : 'application/x-www-url-form-encoded'},
+				headers: {'content-type' : 'application/x-www-form-urlencoded'},
 				url: myserver + '/jajascript/optimize',
 			 	body: '[{"VOL":"clever-jelly-18","DEPART":0,"DUREE":4,"PRIX":7},{"VOL":"outstanding-cowhand-56","DEPART":1,"DUREE":2,"PRIX":9},{"VOL":"thoughtless-trowel-76","DEPART":2,"DUREE":6,"PRIX":7},{"VOL":"miniature-woodpecker-31","DEPART":4,"DUREE":5,"PRIX":6},{"VOL":"tame-shoreline-88","DEPART":5,"DUREE":2,"PRIX":27},{"VOL":"confused-peacock-8","DEPART":5,"DUREE":4,"PRIX":7},{"VOL":"blue-economist-28","DEPART":6,"DUREE":2,"PRIX":1},{"VOL":"late-reptile-90","DEPART":7,"DUREE":6,"PRIX":5},{"VOL":"clumsy-sleeper-85","DEPART":9,"DUREE":5,"PRIX":21},{"VOL":"gigantic-tidewater-85","DEPART":10,"DUREE":2,"PRIX":30},{"VOL":"blue-eyed-sprout-61","DEPART":10,"DUREE":4,"PRIX":14},{"VOL":"cooing-sunshine-5","DEPART":11,"DUREE":2,"PRIX":5},{"VOL":"thankful-fortuneteller-95","DEPART":12,"DUREE":6,"PRIX":4},{"VOL":"swift-anorexic-5","DEPART":14,"DUREE":5,"PRIX":22},{"VOL":"tender-balance-61","DEPART":15,"DUREE":2,"PRIX":13}]'
 			     }, function(error, response, body){
@@ -65,4 +115,21 @@ describe("phase 1 - jajascript", function() {
 				done();
 			     });
 	});
+ 
+	it("should answer correctly to jajascript optimisation", function(done) {
+		request.post({
+				headers: {'content-type' : 'application/x-www-form-urlencoded'},
+				url: myserver + '/jajascript/optimize',
+			 	body: '[ { "VOL": "tame-developer-64", "DEPART": 0, "DUREE": 4, "PRIX": 14 }, { "VOL": "shallow-ringleader-65", "DEPART": 1, "DUREE": 2, "PRIX": 5 }, { "VOL": "depressed-rake-50", "DEPART": 2, "DUREE": 6, "PRIX": 5 }, { "VOL": "lovely-watch-99", "DEPART": 4, "DUREE": 5, "PRIX": 22 }, { "VOL": "immense-hashish-48", "DEPART": 5, "DUREE": 2, "PRIX": 14 }, { "VOL": "tame-stardom-63", "DEPART": 5, "DUREE": 4, "PRIX": 10 }, { "VOL": "inexpensive-reactionary-21", "DEPART": 6, "DUREE": 2, "PRIX": 5 }, { "VOL": "elated-theorist-72", "DEPART": 7, "DUREE": 6, "PRIX": 3 }, { "VOL": "anxious-tack-96", "DEPART": 9, "DUREE": 5, "PRIX": 21 }, { "VOL": "clean-shackle-67", "DEPART": 10, "DUREE": 2, "PRIX": 24 }]'
+			     }, function(error, response, body){
+				expect(response.statusCode).toEqual(201);
+				var result = JSON.parse(body);
+			    	//expect(result.gain).toEqual();
+				done();
+			     });
+	});
+
+
+
+
 });

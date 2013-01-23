@@ -64,9 +64,10 @@ app.post('/jajascript/optimize', function(req, res) {
 		  res.send(400, 'invalid json, empty body');
 		  return;
 		}
-
+		var begin = new Date().getTime();
 		var planning = jajascript.getBestPlanning(JSON.parse(buf));
-		console.log("buffer = ", buf);
+		var end = new Date().getTime();
+		console.log("time = ", end - begin);		
 		res.set('Content-Type', 'application/json');
 		res.send(201, planning);
         });
