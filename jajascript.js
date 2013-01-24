@@ -88,6 +88,8 @@ function maximiseMoney(trips){
 			refP = bestP;
 			//add new possibility only if it s better. Otherwise it would have been filtered on next iteration
 			plannings.push(bestP);
+		}else if (bestP.end < refP.end){
+			plannings.push(bestP);
 		}
 		
 	}

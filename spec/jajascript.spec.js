@@ -84,7 +84,21 @@ describe("phase 1 - jajascript", function() {
 		     });
 	});
 
-
+	it("should answer correctly to jajascript optimisation", function(done) {
+		request.post({
+				headers: {'content-type' : 'application/x-www-url-form-encoded'},
+				url: myserver + '/jajascript/optimize',
+			 	body: '[{ "VOL": "A0", "DEPART": 0, "DUREE": 1, "PRIX": 1 },{ "VOL": "A5", "DEPART": 1, "DUREE": 4, "PRIX": 4 },{ "VOL":"A6", "DEPART": 1, "DUREE": 5, "PRIX": 6 },{ "VOL": "A10", "DEPART": 1, "DUREE": 9, "PRIX": 9 }, { "VOL": "A23", "DEPART": 2, "DUREE": 1, "PRIX": 2 }, { "VOL": "A100", "DEPART": 3, "DUREE": 100, "PRIX": 100 }]'
+			     }, function(error, response, body){
+				expect(response.statusCode).toEqual(201);
+				var result = JSON.parse(body);
+				expect(result.gain).toEqual(103);
+			    	expect(result.path[0]).toBe("A0");
+				expect(result.path[1]).toBe("A23");
+				expect(result.path[2]).toBe("A100");
+				done();
+			     });
+	});
 	it("should answer correctly to jajascript optimisation", function(done) {
 		request.post({
 				headers: {'content-type' : 'application/x-www-url-form-encoded'},
