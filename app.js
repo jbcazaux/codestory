@@ -16,7 +16,6 @@ app.configure(function() {
 	app.use(app.router);
 	app.use('/', express.static(__dirname));
 }).listen(port);
-
 console.log("listening on " + port);
 
 app.get('/', function(req, res){
@@ -67,9 +66,9 @@ app.post('/jajascript/optimize', function(req, res) {
 		var begin = new Date().getTime();
 		var planning = jajascript.getBestPlanning(JSON.parse(buf));
 		var end = new Date().getTime();
-		console.log("time = ", end - begin);		
 		res.set('Content-Type', 'application/json');
 		res.send(201, planning);
+		console.log("time = ", end - begin);		
         });
 });
 

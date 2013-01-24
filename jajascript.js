@@ -1,4 +1,3 @@
-
 /**
 * main function
 */
@@ -16,7 +15,7 @@ function getBestPlanning(orders){
 /*how to order trips*/
 function tripCompare(t1, t2){
 	if (t1.departure === t2.departure){
-		return t2.price - t1.price;
+		return t2.end - t1.end;
 	}
 	return t1.departure - t2.departure;
 }
@@ -64,17 +63,25 @@ But after the trip is added, to remove the worst plannings (a few plannings can 
 */
 function maximiseMoney(trips){
 	var plannings = new Array(),
-	tmpPlanning, bestP, refP;
+	tmpPlanning, bestP, refP, nextTrip;
 	//order trips	
 	trips = trips.sort(tripCompare);
 	//create first planning 
 	plannings.push(new Planning().addTrip(trips.shift()));
 	
-	//define a reference planning (first by default)
+	//define a reference planning (first one by default)
 	refP = plannings[0];
-	for (var t in trips){
+		
+	for (var t = 0; t < trips.length; t++){
+		nextTrip = trips[t+1];
+		//if next trip has same departure than current trip:
+		//the next trip ends before current (thanks to the sorting func)
+		//so if next trip's price is bigger it is not necessary to process current trip. Go to next one directly ! 
+		if (nextTrip && nextTrip.departure == trips[t].departure && nextTrip.price >= trips[t].price) {continue}
+
 		//filter planning to get rid of worst candidates
-			plannings = plannings.filter(optimizeFilter(refP, trips[t].departure));
+		plannings = plannings.filter(optimizeFilter(refP, trips[t].departure));
+		
 		//try to get best planning after analysing a new trip
 		bestP = new Planning().addTrip(trips[t]);
 		for (var p in plannings){
@@ -83,15 +90,14 @@ function maximiseMoney(trips){
 				bestP = tmpPlanning;
 			}
 		}
-		//set new reference planning
+		
 		if (bestP.gain > refP.gain){
+			//set new reference planning
 			refP = bestP;
-			//add new possibility only if it s better. Otherwise it would have been filtered on next iteration
 			plannings.push(bestP);
 		}else if (bestP.end < refP.end){
 			plannings.push(bestP);
 		}
-		
 	}
 	//turns out that the reference planning is da best one !
 	return {"gain": refP.gain, "path": refP.path};
