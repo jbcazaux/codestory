@@ -7,9 +7,8 @@ function getBestPlanning(orders){
 	for (var i in orders){
 		trips.push(new Trip(orders[i]['VOL'], orders[i]['DEPART'], orders[i]['DUREE'], orders[i]['PRIX']));
 	}
-
-	return(maximiseMoney(trips));
-
+	//order trips before processing	
+	return(maximiseMoney(trips.sort(tripCompare)));
 }
 
 /*how to order trips*/
@@ -67,8 +66,6 @@ But after the trip is added, to remove the worst plannings (a few plannings can 
 function maximiseMoney(trips){
 	var plannings = new Array(),
 	tmpPlanning, bestP, refP, nextTrip, cnt1=0, cnt2=0;
-	//order trips	
-	trips = trips.sort(tripCompare);
 	//create first planning 
 	plannings.push(new Planning(trips.shift()));
 	
@@ -88,9 +85,11 @@ function maximiseMoney(trips){
 		//try to get best planning after analysing a new trip
 		bestP = new Planning(trips[t]);
 		for (var p in plannings){
-			tmpPlanning = plannings[p].addTrip(trips[t]);
-			if (tmpPlanning && tmpPlanning.gain > bestP.gain){
-				bestP = tmpPlanning;
+			//tmpPlanning = plannings[p].addTrip(trips[t]);
+			if (plannings[p].end <= trips[t].departure && plannings[p].gain + trips[t].price > bestP.gain){
+			//if (tmpPlanning && tmpPlanning.gain > bestP.gain){
+				//bestP = tmpPlanning;
+				bestP = plannings[p].addTrip(trips[t]);
 			}
 		}
 		
