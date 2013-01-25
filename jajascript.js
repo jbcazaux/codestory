@@ -66,7 +66,7 @@ But after the trip is added, to remove the worst plannings (a few plannings can 
 */
 function maximiseMoney(trips){
 	var plannings = new Array(),
-	tmpPlanning, bestP, refP, nextTrip;
+	tmpPlanning, bestP, refP, nextTrip, cnt1=0, cnt2=0;
 	//order trips	
 	trips = trips.sort(tripCompare);
 	//create first planning 
@@ -77,11 +77,11 @@ function maximiseMoney(trips){
 		
 	for (var t = 0; t < trips.length; t++){
 		nextTrip = trips[t+1];
-		//if next trip has same departure than current trip:
-		//the next trip ends before current (thanks to the sorting func)
-		//so if next trip's price is bigger it is not necessary to process current trip. Go to next one directly ! 
-		if (nextTrip && nextTrip.departure == trips[t].departure && nextTrip.price >= trips[t].price) {continue}
-
+		//if next trip ends before current 
+		//and next trip's price is bigger,
+		// it is not necessary to process current trip. Go to next one directly !
+		if (nextTrip && nextTrip.price >= trips[t].price && nextTrip.end <= trips[t].end ) {continue} 
+		
 		//filter planning to get rid of worst candidates
 		plannings = plannings.filter(optimizeFilter(refP, trips[t].departure));
 		
@@ -102,6 +102,7 @@ function maximiseMoney(trips){
 			plannings.push(bestP);
 		}
 	}
+	console.log("cnt1 = ", cnt1, " cnt2 = ", cnt2);
 	//turns out that the reference planning is da best one !
 	return {"gain": refP.gain, "path": refP.path};
 }
