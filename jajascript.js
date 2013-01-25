@@ -30,19 +30,22 @@ function Trip(id, departure, duration, price){
 }
 
 /*a planning has a list of its trip's ids, an end and gain(money earned)*/
-function Planning(path, gain, end){
-	this.path = path || [];
-	this.gain = gain || 0;
-	this.end = end || 0;
+function Planning(trip){
+	trip = trip || {};
+	this.path = new Array(trip.id);
+	this.gain = trip.price || 0;
+	this.end = trip.end || 0;
 }
 /*adding a trip to a planning return a new planning with old trips and the new one
 * if planning cannot accept the trip, it returns an empty array
 */
 Planning.prototype.addTrip = function(trip){
 	if (this.end <= trip.departure){
-		return new Planning(this.path.concat(trip.id), this.gain + trip.price, trip.end);
+		var newPlanning = new Planning({price: this.gain + trip.price, end: trip.end});
+		newPlanning.path = this.path.concat(trip.id);
+		return newPlanning;
 	}
-	return [];
+	return null;
 }
 
 /*filter plannings by removing worst candidates
@@ -67,7 +70,7 @@ function maximiseMoney(trips){
 	//order trips	
 	trips = trips.sort(tripCompare);
 	//create first planning 
-	plannings.push(new Planning().addTrip(trips.shift()));
+	plannings.push(new Planning(trips.shift()));
 	
 	//define a reference planning (first one by default)
 	refP = plannings[0];
@@ -83,10 +86,10 @@ function maximiseMoney(trips){
 		plannings = plannings.filter(optimizeFilter(refP, trips[t].departure));
 		
 		//try to get best planning after analysing a new trip
-		bestP = new Planning().addTrip(trips[t]);
+		bestP = new Planning(trips[t]);
 		for (var p in plannings){
 			tmpPlanning = plannings[p].addTrip(trips[t]);
-			if (tmpPlanning.gain > bestP.gain){
+			if (tmpPlanning && tmpPlanning.gain > bestP.gain){
 				bestP = tmpPlanning;
 			}
 		}
