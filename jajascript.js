@@ -31,7 +31,7 @@ function Trip(id, departure, duration, price){
 /*a planning has a list of its trip's ids, an end and gain(money earned)*/
 function Planning(trip){
 	trip = trip || {};
-	this.path = new Array(trip.id);
+	this.path = trip.id ? new Array(trip.id) : [];
 	this.gain = trip.price || 0;
 	this.end = trip.end || 0;
 }
@@ -65,7 +65,7 @@ But after the trip is added, to remove the worst plannings (a few plannings can 
 */
 function maximiseMoney(trips){
 	var plannings = new Array(),
-	tmpPlanning, bestP, refP, nextTrip, cnt1=0, cnt2=0;
+	tmpPlanning, bestP, refP, nextTrip, cnt1=0, cnt2=0, bestPGain, emptyPlanning = new Planning();
 	//create first planning 
 	plannings.push(new Planning(trips.shift()));
 	
@@ -83,21 +83,34 @@ function maximiseMoney(trips){
 		plannings = plannings.filter(optimizeFilter(refP, trips[t].departure));
 		
 		//try to get best planning after analysing a new trip
-		bestP = new Planning(trips[t]);
-		for (var p in plannings){
-			//tmpPlanning = plannings[p].addTrip(trips[t]);
-			if (plannings[p].end <= trips[t].departure && plannings[p].gain + trips[t].price > bestP.gain){
-			//if (tmpPlanning && tmpPlanning.gain > bestP.gain){
-				//bestP = tmpPlanning;
-				bestP = plannings[p].addTrip(trips[t]);
+		//bestP = new Planning(trips[t]);
+		bestP = null;
+		bestPGain = trips[t].price;
+		for (var p = 0; p < plannings.length; p++){
+			if (plannings[p].end <= trips[t].departure ){
+				if (plannings[p].gain + trips[t].price > bestPGain) {
+					bestP = plannings[p];
+					bestPGain = plannings[p].gain + trips[t].price;
+				}
 			}
 		}
-		
-		if (bestP.gain > refP.gain){
+
+		if (bestPGain > refP.gain){
 			//set new reference planning
+			if (bestP == null){ 
+				bestP = emptyPlanning.addTrip(trips[t])
+			}else {
+				bestP = bestP.addTrip(trips[t]);	
+			}
+			
 			refP = bestP;
 			plannings.push(bestP);
-		}else if (bestP.end < refP.end){
+		}else if (trips[t].end < refP.end){
+			if (bestP == null){ 
+				bestP = emptyPlanning.addTrip(trips[t])
+			}else {
+				bestP = bestP.addTrip(trips[t]);	
+			}
 			plannings.push(bestP);
 		}
 	}

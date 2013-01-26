@@ -3,12 +3,12 @@ var request = require('request');
 var myserver = "http://localhost:8123";
 //myserver = "http://codestory.cloudfoundry.com";
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL=120000;
+jasmine.DEFAULT_TIMEOUT_INTERVAL=60000;
 describe("phase 1 - jajascript", function() {
 	it("should respond 201 under heavy load to jajascript optimisation", function(done) {
 
 	var payload = [];
-	for (var i = 0; i < 60000; i++){
+	for (var i = 0; i < 200000; i++){
 		var f = {};
 		f.VOL='flight'+ i;
 		f.DEPART = Math.round(Math.random() * 10000);
