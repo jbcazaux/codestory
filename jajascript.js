@@ -51,21 +51,23 @@ Planning.prototype.addTrip = function(trip){
 * ie plannings whose gain is not as good as the reference planning
 * and whose end is too late
 */
-function optimizeFilter(refP, minDeparture){
+function optimizeFilter(refP, minDeparture, lastMin){
 	return function(p){
-		if (p.gain < refP.gain && (p.end >= refP.end || refP.end <= minDeparture)){
+		if (p.gain < refP.gain && (p.end >= refP.end || refP.end <= minDeparture || p.end < lastMin)){
 			return false;		
 		}
 		return true;
 	}
 }
 
+
+
 /*the idea is to iterate over all possibilities each time a trip is added. 
 But after the trip is added, to remove the worst plannings (a few plannings can remain after the filter).
 */
 function maximiseMoney(trips){
 	var plannings = new Array(),
-	tmpPlanning, bestP, refP, nextTrip, cnt1=0, cnt2=0, bestPGain, emptyPlanning = new Planning();
+	tmpPlanning, bestP, refP, nextTrip, cnt1=0, cnt2=0, bestPGain, emptyPlanning = new Planning(), lastMin = 0;
 	//create first planning 
 	plannings.push(new Planning(trips.shift()));
 	
@@ -78,12 +80,11 @@ function maximiseMoney(trips){
 		//and next trip's price is bigger,
 		// it is not necessary to process current trip. Go to next one directly !
 		if (nextTrip && nextTrip.price >= trips[t].price && nextTrip.end <= trips[t].end ) {continue} 
-		
+		//plannings = plannings.filter(optimizeFilter2(refP, lastMin));		
 		//filter planning to get rid of worst candidates
-		plannings = plannings.filter(optimizeFilter(refP, trips[t].departure));
-		
+		plannings = plannings.filter(optimizeFilter(refP, trips[t].departure, lastMin));
+
 		//try to get best planning after analysing a new trip
-		//bestP = new Planning(trips[t]);
 		bestP = null;
 		bestPGain = trips[t].price;
 		for (var p = 0; p < plannings.length; p++){
@@ -94,25 +95,29 @@ function maximiseMoney(trips){
 				}
 			}
 		}
-
 		if (bestPGain > refP.gain){
 			//set new reference planning
-			if (bestP == null){ 
+			if (bestP == null){
 				bestP = emptyPlanning.addTrip(trips[t])
 			}else {
-				bestP = bestP.addTrip(trips[t]);	
+				trips[t].departure = bestP.end;
+				bestP = bestP.addTrip(trips[t]);
+				if (trips[t].departure > lastMin) lastMin = trips[t].departure;	
 			}
-			
 			refP = bestP;
 			plannings.push(bestP);
+			cnt1++;
 		}else if (trips[t].end < refP.end){
-			if (bestP == null){ 
+			if (bestP == null){
 				bestP = emptyPlanning.addTrip(trips[t])
 			}else {
+				trips[t].departure = bestP.end;
 				bestP = bestP.addTrip(trips[t]);	
+				if (trips[t].departure > lastMin) lastMin = trips[t].departure;
 			}
 			plannings.push(bestP);
-		}
+			cnt2++;
+		}	
 	}
 	console.log("cnt1 = ", cnt1, " cnt2 = ", cnt2);
 	//turns out that the reference planning is da best one !
