@@ -8,12 +8,13 @@ describe("phase 1 - jajascript", function() {
 	it("should respond 201 under heavy load to jajascript optimisation", function(done) {
 
 	var payload = [];
-	for (var i = 0; i < 200000; i++){
+	var max = 500000;
+	for (var i = 0; i < max; i++){
 		var f = {};
 		f.VOL='flight'+ i;
-		f.DEPART = Math.round(Math.random() * 10000);
-		f.DUREE = Math.round(Math.random() * 30);
-		f.PRIX = Math.round(Math.random() * 40);
+		f.DEPART = Math.round(Math.random() * max);
+		f.DUREE = Math.round(Math.random() * 50);
+		f.PRIX = Math.round(Math.random() * 50);
 		payload.push(f);
 	}
 	request.post({
